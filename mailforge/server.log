@@ -1,0 +1,1322 @@
+SHARP TCP server listening on port 5500 (HTTP on 5501)
+Server address format: user#kosh.uno:5500
+HTTP server listening on port 5501
+TimeoutNegativeWarning: -8077519.574047908 is a negative number.
+Timeout duration was set to 1.
+      at reconnect (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:353:5)
+      at connect (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:113:7)
+      at connect (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:392:7)
+      at handle (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:140:65)
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error processing scheduled emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at processScheduledEmails (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:552:28)
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 252 |     chunk = nextWriteTimer = null
+253 |     return x
+254 |   }
+255 | 
+256 |   function connectTimedOut() {
+257 |     errored(Errors.connection('CONNECT_TIMEOUT', options, socket))
+                         ^
+error: write CONNECT_TIMEOUT ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECT_TIMEOUT",
+ address: "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech",
+    port: 5432,
+    code: "CONNECT_TIMEOUT"
+
+      at connectTimedOut (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:257:20)
+      at done (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:1033:8)
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at processScheduledEmails (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:552:28)
+
+Error cleaning up expired emails: 252 |     chunk = nextWriteTimer = null
+253 |     return x
+254 |   }
+255 | 
+256 |   function connectTimedOut() {
+257 |     errored(Errors.connection('CONNECT_TIMEOUT', options, socket))
+                         ^
+error: write CONNECT_TIMEOUT ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECT_TIMEOUT",
+ address: "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech",
+    port: 5432,
+    code: "CONNECT_TIMEOUT"
+
+      at connectTimedOut (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:257:20)
+      at done (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:1033:8)
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error processing scheduled emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at processScheduledEmails (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:552:28)
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error processing scheduled emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at processScheduledEmails (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:552:28)
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error cleaning up expired emails: 252 |     chunk = nextWriteTimer = null
+253 |     return x
+254 |   }
+255 | 
+256 |   function connectTimedOut() {
+257 |     errored(Errors.connection('CONNECT_TIMEOUT', options, socket))
+                         ^
+error: write CONNECT_TIMEOUT undefined:undefined
+   errno: "CONNECT_TIMEOUT",
+ address: undefined,
+    port: undefined,
+    code: "CONNECT_TIMEOUT"
+
+      at connectTimedOut (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:257:20)
+      at done (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:1033:8)
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error processing scheduled emails: 252 |     chunk = nextWriteTimer = null
+253 |     return x
+254 |   }
+255 | 
+256 |   function connectTimedOut() {
+257 |     errored(Errors.connection('CONNECT_TIMEOUT', options, socket))
+                         ^
+error: write CONNECT_TIMEOUT undefined:undefined
+   errno: "CONNECT_TIMEOUT",
+ address: undefined,
+    port: undefined,
+    code: "CONNECT_TIMEOUT"
+
+      at connectTimedOut (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:257:20)
+      at done (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:1033:8)
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at processScheduledEmails (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:552:28)
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error processing scheduled emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error cleaning up used hashcash tokens: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error processing scheduled emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at processScheduledEmails (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:552:28)
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error processing scheduled emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error processing scheduled emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error processing scheduled emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error updating stale pending emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:22:15
+
+Error processing scheduled emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at processScheduledEmails (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:552:28)
+
+Error cleaning up expired emails: 433 |     socket = null
+434 | 
+435 |     if (initial)
+436 |       return reconnect()
+437 | 
+438 |     !hadError && (query || sent.length) && error(Errors.connection('CONNECTION_CLOSED', options, socket))
+                                                              ^
+error: write CONNECTION_CLOSED ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech:5432
+   errno: "CONNECTION_CLOSED",
+ address: [ "ep-calm-recipe-ailfrvcn-pooler.c-4.us-east-1.aws.neon.tech" ],
+    port: [ 5432 ],
+    code: "CONNECTION_CLOSED"
+
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:438:57)
+      at closed (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/connection.js:642:24)
+      at emit (node:events:95:22)
+      at node:net:1468:20
+      at cachedError (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:170:27)
+      at Query (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/query.js:53:17)
+      at sql (/Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/node_modules/postgres/src/index.js:151:10)
+      at /Users/parmindersingh/Downloads/Parminder/opensource/twoblade/SHARP/main.js:37:32
+

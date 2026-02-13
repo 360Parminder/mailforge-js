@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  mailforge:
+    build:
+      context: .
+      dockerfile: mailforge/Dockerfile
+    ports:
+      - "5000:5000"   # Mail Protocol
+      - "5001:5001"   # HTTP API
+      - "587:587"     # SMTP (traditional email clients)
+      - "143:143"     # IMAP (traditional email clients)
+      - "2525:2525"   # SMTP Bridge (receive from external mail servers)
+    env_file:
+      - mailforge/.env
+    depends_on:
+      - postgres
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./mailforge/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+volumes:
+  pgdata:

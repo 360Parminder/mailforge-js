@@ -1,0 +1,14 @@
+node_modules
+.github
+.vscode
+.idea
+nullmark
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+.env
+.env.*
+!.env.example
+!.env.test
