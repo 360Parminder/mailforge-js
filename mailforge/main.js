@@ -8,7 +8,7 @@ import { validateApiKey } from './middleware/apiAuth.js'
 import { createHash } from 'crypto'
 import { createSMTPServer } from './smtp-server.js'
 import { createIMAPServer } from './imap-server.js'
-import { createBridgeReceiver, testEmailSending } from './email-bridge.js'
+import { createBridgeReceiver, testEmailSending, sendToTraditionalEmail } from './email-bridge.js'
 
 const MAILFORGE_PORT = +process.env.MAILFORGE_PORT || 5000
 const HTTP_PORT = +process.env.HTTP_PORT || MAILFORGE_PORT + 1
@@ -734,39 +734,23 @@ app.post('/send', validateApiKey, async (req, res) => {
             return res.json({ success: true, id: emailId, message: "Email marked as spam due to low PoW or Turnstile policy." });
         }
 
-
+        // Send to external email servers using SMTP
         try {
-            const result = await Promise.race([
-                sendEmailToRemoteServer({
-                    from, to, subject, body, content_type, html_body,
-                    attachments: attachmentKeys,
-                    hashcash: hashcash
-                }),
-                new Promise((_, r) => setTimeout(() => {
-                    r(new Error('Connection timed out'))
-                }, 10000))
-            ])
-
-            if (result.responses?.some(r => r.type === 'ERROR')) {
-                if (emailId) {
-                    await sql`UPDATE emails SET status='rejected', error_message = ${result.responses.find(r => r.type === 'ERROR')?.message || 'Remote server rejected'} WHERE id=${emailId}`;
-                    if (attachmentKeys.length > 0) {
-                        await sql`UPDATE attachments SET status='rejected' WHERE key = ANY(${attachmentKeys})`;
-                    }
-                }
-                return res.status(400).json({ success: false, message: 'Remote server rejected the email' })
-            }
+            await sendToTraditionalEmail(
+                from,
+                to,
+                subject,
+                body,
+                html_body || body
+            );
 
             if (emailId) {
-                // Update status to 'sent' only upon successful remote delivery,
-                // even if it was initially marked as 'spam' by the sender.
-                // The recipient server will make its own final determination.
                 await sql`UPDATE emails SET status='sent', sent_at = NOW() WHERE id=${emailId}`;
                 if (attachmentKeys.length > 0) {
                     await sql`UPDATE attachments SET status='sent' WHERE key = ANY(${attachmentKeys})`;
                 }
             }
-            return res.json({ ...result, id: emailId });
+            return res.json({ success: true, id: emailId });
         } catch (e) {
             if (emailId) {
                 await sql`UPDATE emails SET status='failed', error_message=${e.message} WHERE id=${emailId}`;
