@@ -1,9 +1,10 @@
 #!/usr/bin/env bun
-import postgres from 'postgres';
+import { PrismaClient } from '@prisma/client';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
+import { SignJWT } from 'jose';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -23,9 +24,15 @@ envContent.split('\n').forEach(line => {
 
 const DATABASE_URL = envVars.DATABASE_URL || process.env.DATABASE_URL;
 const DOMAIN_NAME = envVars.DOMAIN_NAME || 'localhost';
+const JWT_SECRET = new TextEncoder().encode(envVars.JWT_SECRET || process.env.JWT_SECRET);
 
 if (!DATABASE_URL) {
     console.error('❌ DATABASE_URL not found in .env file');
+    process.exit(1);
+}
+
+if (!JWT_SECRET) {
+    console.error('❌ JWT_SECRET not found in .env file');
     process.exit(1);
 }
 
@@ -38,52 +45,86 @@ console.log();
 const args = process.argv.slice(2);
 const username = args[0] || 'admin';
 
+const prisma = new PrismaClient();
+
 console.log(`👤 Creating user: ${username}@${DOMAIN_NAME}`);
 console.log();
 
-const sql = postgres(DATABASE_URL);
+async function generateJWT(userId, username, domain) {
+    return await new SignJWT({ 
+        id: userId,
+        userId: userId,
+        username: username,
+        domain: domain,
+        email: `${username}@${domain}`
+    })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('365d') // 1 year expiration
+    .sign(JWT_SECRET);
+}
 
 async function createUser() {
     try {
-        // Simple password hash (in production, use proper bcrypt)
+        // Generate password
         const password = Math.random().toString(36).slice(-12);
         const passwordHash = createHash('sha256').update(password).digest('hex');
         
         // Check if user exists
-        const existing = await sql`
-            SELECT id FROM users WHERE username = ${username} AND domain = ${DOMAIN_NAME}
-        `;
+        const existing = await prisma.user.findFirst({
+            where: {
+                username: username,
+                domain: DOMAIN_NAME
+            }
+        });
         
-        if (existing.length > 0) {
-            console.log('⚠️  User already exists. Generating new API key...');
-            const userId = existing[0].id;
+        if (existing) {
+            console.log('⚠️  User already exists. Generating new JWT token...');
             
-            // Generate API key
-            const apiKey = await sql`SELECT generate_api_key(${userId}) as key`;
+            const jwtToken = await generateJWT(existing.id, existing.username, existing.domain);
             
             console.log();
-            console.log('✅ API Key generated successfully!');
+            console.log('✅ JWT Token generated successfully!');
             console.log();
             console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
             console.log('📧 Email Address:', `${username}@${DOMAIN_NAME}`);
-            console.log('🔑 API Key:', apiKey[0].key);
+            console.log('👤 User ID:', existing.id);
+            console.log('🔑 JWT Token:');
+            console.log(jwtToken);
             console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
             console.log();
             return;
         }
         
-        // Create new user
-        const result = await sql`
-            INSERT INTO users (username, domain, password_hash, is_banned, created_at)
-            VALUES (${username}, ${DOMAIN_NAME}, ${passwordHash}, false, NOW())
-            RETURNING id
-        `;
+        // Create new user with Prisma
+        const user = await prisma.user.create({
+            data: {
+                username: username,
+                domain: DOMAIN_NAME,
+                email: `${username}@${DOMAIN_NAME}`,
+                password: passwordHash,
+                name: username,
+                role: 'user',
+                active: true,
+                is_banned: false,
+                is_admin: false,
+                settings: {
+                    create: {
+                        notifications_enabled: true
+                    }
+                },
+                storageLimit: {
+                    create: {
+                        storage_limit: 1073741824 // 1GB
+                    }
+                }
+            }
+        });
         
-        const userId = result[0].id;
-        console.log(`✅ User created with ID: ${userId}`);
+        // Generate JWT token
+        const jwtToken = await generateJWT(user.id, user.username, user.domain);
         
-        // Generate API key
-        const apiKey = await sql`SELECT generate_api_key(${userId}) as key`;
+        console.log(`✅ User created with ID: ${user.id}`);
         
         console.log();
         console.log('╔══════════════════════════════════════════════════════════╗');
@@ -92,15 +133,17 @@ async function createUser() {
         console.log();
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         console.log('📧 Email Address:', `${username}@${DOMAIN_NAME}`);
-        console.log('🔑 API Key:', apiKey[0].key);
-        console.log('🔒 Password (temporary):', password);
-        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-        console.log();
-        console.log('⚠️  IMPORTANT: Save the API key securely! You won\'t be able to see it again.');
+        console.log('👤 User ID:', user.id);
+        console.log('🔒 Password (teUse this JWT token in your app server and mail server.');
         console.log();
         console.log('📝 Test the API:');
         console.log(`   curl -X POST http://localhost:${envVars.HTTP_PORT || 5501}/send \\`);
-        console.log(`     -H 'X-API-Key: ${apiKey[0].key}' \\`);
+        console.log(`     -H 'Authorization: Bearer YOUR_JWT_TOKENr):');
+        console.log(jwtToken);
+        console.log();
+        console.log('📝 Test the API:');
+        console.log(`   curl -X POST http://localhost:${envVars.HTTP_PORT || 5501}/send \\`);
+        console.log(`     -H 'X-API-Key: ${apiKey}' \\`);
         console.log(`     -H 'Content-Type: application/json' \\`);
         console.log(`     -d '{"from":"${username}@${DOMAIN_NAME}","to":"test@example.com","subject":"Test","body":"Hello"}'`);
         console.log();
@@ -110,12 +153,14 @@ async function createUser() {
         console.error(error);
         process.exit(1);
     } finally {
-        await sql.end();
+        await prisma.$disconnect();
     }
 }
 
 console.log('Usage: bun run create-user.js [username]');
-console.log('Example: bun run create-user.js myuser 120');
+console.log('Example: bun run create-user.js myuser');
 console.log();
+
+createUser();
 
 createUser();
