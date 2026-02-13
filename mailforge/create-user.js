@@ -134,16 +134,18 @@ async function createUser() {
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         console.log('📧 Email Address:', `${username}@${DOMAIN_NAME}`);
         console.log('👤 User ID:', user.id);
-        console.log('🔒 Password (teUse this JWT token in your app server and mail server.');
+        console.log('🔒 Password (temporary):', password);
+        console.log('💾 Storage Limit: 1GB');
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         console.log();
-        console.log('📝 Test the API:');
-        console.log(`   curl -X POST http://localhost:${envVars.HTTP_PORT || 5501}/send \\`);
-        console.log(`     -H 'Authorization: Bearer YOUR_JWT_TOKENr):');
+        console.log('🔑 JWT Token (valid for 1 year):');
         console.log(jwtToken);
         console.log();
+        console.log('⚠️  IMPORTANT: Use this JWT token in your app server and mail server.');
+        console.log();
         console.log('📝 Test the API:');
         console.log(`   curl -X POST http://localhost:${envVars.HTTP_PORT || 5501}/send \\`);
-        console.log(`     -H 'X-API-Key: ${apiKey}' \\`);
+        console.log(`     -H 'Authorization: Bearer YOUR_JWT_TOKEN' \\`);
         console.log(`     -H 'Content-Type: application/json' \\`);
         console.log(`     -d '{"from":"${username}@${DOMAIN_NAME}","to":"test@example.com","subject":"Test","body":"Hello"}'`);
         console.log();
@@ -156,11 +158,5 @@ async function createUser() {
         await prisma.$disconnect();
     }
 }
-
-console.log('Usage: bun run create-user.js [username]');
-console.log('Example: bun run create-user.js myuser');
-console.log();
-
-createUser();
 
 createUser();

@@ -1,10 +1,8 @@
 import nodemailer from 'nodemailer';
-import postgres from 'postgres';
 import { SMTPServer } from 'smtp-server';
 import { simpleParser } from 'mailparser';
 import { resolveMx } from './dns-utils.js';
-
-const sql = postgres(process.env.DATABASE_URL);
+import { createEmail, findUser } from './lib/prisma.js';
 const DOMAIN = process.env.DOMAIN_NAME || 'localhost';
 const SMTP_BRIDGE_PORT = +process.env.SMTP_BRIDGE_PORT || 2525;
 
@@ -50,18 +48,20 @@ export async function sendToTraditionalEmail(fromEmail, toEmail, subject, textBo
         
         // Log the sent email
         const [fromUser, fromDomain] = fromEmail.split('@');
-        const result = await sql`
-            INSERT INTO emails (
-                from_address, from_domain, to_address, to_domain,
-                subject, body, html_body, content_type, status, sent_at
-            ) VALUES (
-                ${fromEmail}, ${fromDomain}, ${toEmail}, ${toDomain},
-                ${subject}, ${textBody}, ${htmlBody}, 'text/html', 'sent', NOW()
-            )
-            RETURNING id
-        `;
+        const email = await createEmail({
+            from_address: fromEmail,
+            from_domain: fromDomain,
+            to_address: toEmail,
+            to_domain: toDomain,
+            subject: subject,
+            body: textBody,
+            html_body: htmlBody,
+            content_type: 'text/html',
+            status: 'sent',
+            sent_at: new Date()
+        });
 
-        console.log(`✅ Email #${result[0].id} sent successfully to ${toEmail} (MessageID: ${info.messageId})`);
+        console.log(`✅ Email #${email.id} sent successfully to ${toEmail} (MessageID: ${info.messageId})`);
         return info;
     } catch (error) {
         console.error('Error sending email:', error);
@@ -69,15 +69,19 @@ export async function sendToTraditionalEmail(fromEmail, toEmail, subject, textBo
         // Log as failed
         const [fromUser, fromDomain] = fromEmail.split('@');
         const [toUser, toDomain] = toEmail.split('@');
-        await sql`
-            INSERT INTO emails (
-                from_address, from_domain, to_address, to_domain,
-                subject, body, html_body, content_type, status, error_message, sent_at
-            ) VALUES (
-                ${fromEmail}, ${fromDomain}, ${toEmail}, ${toDomain},
-                ${subject}, ${textBody}, ${htmlBody}, 'text/html', 'failed', ${error.message}, NOW()
-            )
-        `;
+        await createEmail({
+            from_address: fromEmail,
+            from_domain: fromDomain,
+            to_address: toEmail,
+            to_domain: toDomain,
+            subject: subject,
+            body: textBody,
+            html_body: htmlBody,
+            content_type: 'text/html',
+            status: 'failed',
+            error_message: error.message,
+            sent_at: new Date()
+        });
         
         throw error;
     }
@@ -119,29 +123,30 @@ export function createBridgeReceiver() {
                     const [username, domain] = toEmail.split('@');
                     
                     // Check if recipient exists
-                    const users = await sql`
-                        SELECT id FROM users 
-                        WHERE username = ${username} AND domain = ${domain}
-                    `;
+                    const user = await findUser(username, domain);
                     
-                    if (users.length === 0) {
+                    if (!user) {
                         console.log(`❌ ERROR: Recipient ${toEmail} not found on this server`);
                         throw new Error('Recipient not found');
                     }
 
                     // Store the email
-                    const result = await sql`
-                        INSERT INTO emails (
-                            from_address, from_domain, to_address, to_domain,
-                            subject, body, html_body, content_type, status, sent_at
-                        ) VALUES (
-                            ${fromEmail}, ${fromEmail.split('@')[1]}, ${toEmail}, ${domain},
-                            ${subject}, ${textBody}, ${htmlBody}, 'text/html', 'sent', NOW()
-                        )
-                        RETURNING id
-                    `;
+                    const email = await createEmail({
+                        user: user.id,
+                        from_address: fromEmail,
+                        from_domain: fromEmail.split('@')[1],
+                        to_address: toEmail,
+                        to_domain: domain,
+                        subject: subject,
+                        body: textBody,
+                        html_body: htmlBody,
+                        content_type: 'text/html',
+                        status: 'sent',
+                        folder: 'inbox',
+                        sent_at: new Date()
+                    });
 
-                    console.log(`✅ Email #${result[0].id} successfully delivered to ${toEmail}`);
+                    console.log(`✅ Email #${email.id} successfully delivered to ${toEmail}`);
                     console.log('='.repeat(80) + '\n');
                     callback();
                 } catch (error) {
