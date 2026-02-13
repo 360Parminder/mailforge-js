@@ -123,3 +123,16 @@ export async function verifyEmailDomain(claimedDomain, clientIP) {
 // Legacy alias
 export const verifySharpDomain = verifyEmailDomain;
 
+// Parse email address into username and domain
+export function parseEmailAddress(address) {
+    if (!address || typeof address !== 'string') return null;
+    const match = address.match(/^([^@]+)@([^@]+)$/);
+    if (!match) return null;
+    return {
+        username: match[1],
+        domain: match[2]
+    };
+}
+
+// Legacy alias
+export const parseSharpAddress = parseEmailAddress;
