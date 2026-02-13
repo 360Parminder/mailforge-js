@@ -637,18 +637,15 @@ app.post('/send', validateApiKey, async (req, res) => {
             });
         }
 
-        const spamScore = await calculateSpamScore(hashcash, emailData.to);
+        // API key authentication bypasses hashcash requirement
         let status = 'pending';
+        let spamScore = 0;
 
-        if (!hashcash || spamScore >= HASHCASH_THRESHOLDS.REJECT) {
-            return res.status(429).json({
-                success: false,
-                message: `Insufficient proof of work or invalid/reused token. Required: ${HASHCASH_THRESHOLDS.TRIVIAL} bits. Score: ${spamScore}.`
-            });
-        }
-
-        if (spamScore > 0) {
-            status = 'spam';
+        if (hashcash) {
+            spamScore = await calculateSpamScore(hashcash, emailData.to);
+            if (spamScore > 0) {
+                status = 'spam';
+            }
         }
 
         if (emailData.scheduled_at && status !== 'spam') {
