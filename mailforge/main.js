@@ -1,6 +1,7 @@
 import express from 'express'
 import net from 'net'
 import cors from 'cors'
+import postgres from 'postgres'
 import { createHash } from 'crypto'
 import { resolveSrv, verifySharpDomain } from './dns-utils.js'
 import { validateAuthToken } from './middleware/auth.js'
@@ -123,24 +124,27 @@ const HASHCASH_THRESHOLDS = {
     REJECT: 3
 };
 
-const verifyUser = (u, d) =>
-    sql`SELECT * FROM users WHERE username=${u} AND domain=${d}`.then(r => r[0])
-const logEmail = (fa, fd, ta, td, s, b, ct = 'text/plain', hb = null, st = 'pending', sa = null, rid = null, tid = null, ea = null, sd = false) => {
+// logEmail helper function using Prisma
+const logEmail = async (fa, fd, ta, td, s, b, ct = 'text/plain', hb = null, st = 'pending', sa = null, rid = null, tid = null, ea = null, sd = false) => {
     const classification = classifyEmail(s, b, hb);
-    return sql`
-        INSERT INTO emails (
-            from_address, from_domain, to_address, to_domain, 
-            subject, body, content_type, html_body, status, 
-            scheduled_at, classification, reply_to_id, thread_id,
-            expires_at, self_destruct
-        ) 
-        VALUES (
-            ${fa}, ${fd}, ${ta}, ${td}, ${s}, ${b}, ${ct}, 
-            ${hb}, ${st}, ${sa}, ${classification}, ${rid}, ${tid},
-            ${ea}, ${sd}
-        ) 
-        RETURNING id
-    `;
+    const email = await createEmail({
+        from_address: fa,
+        from_domain: fd,
+        to_address: ta,
+        to_domain: td,
+        subject: s,
+        body: b,
+        content_type: ct,
+        html_body: hb,
+        status: st,
+        scheduled_at: sa,
+        classification: classification,
+        reply_to_id: rid,
+        thread_id: tid,
+        expires_at: ea,
+        self_destruct: sd
+    });
+    return [{ id: email.id }];
 }
 
 const parseSharpAddress = a => {

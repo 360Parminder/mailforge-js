@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-    url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 // ============================================================================
@@ -101,7 +101,7 @@ model UserStorageLimit {
 model Domain {
   id                String   @id @default(uuid())
   domain            String   @unique
-  owner             String   // User ID as string (for UUID compatibility)
+  owner             Int      // User ID as integer
   ownerUser         User     @relation(fields: [owner], references: [id], onDelete: Cascade)
   verified          Boolean  @default(false)
   verificationToken String?  @map("verification_token")
@@ -185,7 +185,7 @@ model Email {
   self_destruct  Boolean              @default(false) @map("self_destruct")
   
   // User ownership
-  user           String?              // User ID
+  user           Int?                 // User ID
   userInfo       User?                @relation(fields: [user], references: [id], onDelete: Cascade)
   
   // Additional user relation for sent emails
