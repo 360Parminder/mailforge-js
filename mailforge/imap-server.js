@@ -1,6 +1,5 @@
 import net from 'net';
 import postgres from 'postgres';
-
 const sql = postgres(process.env.DATABASE_URL);
 const DOMAIN = process.env.DOMAIN_NAME || 'localhost';
 const IMAP_PORT = +process.env.IMAP_PORT || 143;
