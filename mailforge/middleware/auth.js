@@ -1,8 +1,8 @@
-import postgres from 'postgres';
+import { PrismaClient } from '@prisma/client';
 import { jwtVerify } from 'jose';
 import fetch from 'node-fetch';
 
-export const sql = postgres(process.env.DATABASE_URL);
+export const prisma = new PrismaClient();
 const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 const alg = 'HS256';
 
@@ -51,34 +51,20 @@ export async function validateAuthToken(req, res, next) {
             algorithms: [alg]
         });
 
-        // check if code is still valid
-        const codes = await sql`
-            SELECT user_id FROM user_secret_codes 
-            WHERE code = ${payload.code}
-        `;
+        // Get user by ID from JWT
+        const userId = payload.userId || payload.id;
+        const user = await prisma.user.findUnique({
+            where: { id: typeof userId === 'string' ? parseInt(userId) : userId }
+        });
 
-        if (!codes.length) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid or expired session'
-            });
-        }
-
-        // get user data
-        const users = await sql`
-            SELECT id, username, domain, is_banned
-            FROM users 
-            WHERE id = ${payload.userId}
-        `;
-
-        if (!users.length || users[0].is_banned) {
+        if (!user || user.is_banned || !user.active) {
             return res.status(403).json({
                 success: false,
                 message: 'Account not found or banned'
             });
         }
 
-        req.user = users[0];
+        req.user = user;
         next();
     } catch (error) {
         console.error('Auth error:', error);

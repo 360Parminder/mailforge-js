@@ -1,14 +1,27 @@
 import express from 'express'
 import net from 'net'
 import cors from 'cors'
-import postgres from 'postgres'
+import { createHash } from 'crypto'
 import { resolveSrv, verifySharpDomain } from './dns-utils.js'
 import { validateAuthToken } from './middleware/auth.js'
 import { validateApiKey } from './middleware/apiAuth.js'
-import { createHash } from 'crypto'
 import { createSMTPServer } from './smtp-server.js'
 import { createIMAPServer } from './imap-server.js'
 import { createBridgeReceiver, testEmailSending, sendToTraditionalEmail } from './email-bridge.js'
+import { 
+    prisma, 
+    createEmail, 
+    updateEmailStatus, 
+    getEmailById,
+    verifyUser,
+    findUser,
+    getScheduledEmails,
+    isHashcashUsed,
+    markHashcashUsed,
+    cleanupExpiredHashcash,
+    cleanupPendingEmails,
+    updateAttachmentsByEmailId
+} from './lib/prisma.js'
 
 const MAILFORGE_PORT = +process.env.MAILFORGE_PORT || 5000
 const HTTP_PORT = +process.env.HTTP_PORT || MAILFORGE_PORT + 1
