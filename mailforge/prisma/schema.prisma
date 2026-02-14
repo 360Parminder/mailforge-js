@@ -15,7 +15,7 @@ datasource db {
 // ============================================================================
 
 model User {
-  id            Int       @id @default(autoincrement())
+  id            String    @id @default(uuid())
   // User authentication & identity
   username      String    // email username (before @)
   domain        String    // email domain (after @)
@@ -64,7 +64,7 @@ model User {
 
 model UserSecretCode {
   code       String   @id @db.VarChar(64)
-  user_id    Int      @map("user_id")
+  user_id    String   @map("user_id")
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   created_at DateTime @default(now()) @map("created_at")
   ip         String?  @db.VarChar(48)
@@ -75,7 +75,7 @@ model UserSecretCode {
 }
 
 model UserSettings {
-  user_id               Int      @id @map("user_id")
+  user_id               String   @id @map("user_id")
   user                  User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   notifications_enabled Boolean  @default(false) @map("notifications_enabled")
   created_at            DateTime @default(now()) @map("created_at")
@@ -85,7 +85,7 @@ model UserSettings {
 }
 
 model UserStorageLimit {
-  user_id       Int      @id @map("user_id")
+  user_id       String   @id @map("user_id")
   user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   storage_limit BigInt   @default(1073741824) @map("storage_limit") // 1GB default
   created_at    DateTime @default(now()) @map("created_at")
@@ -101,7 +101,7 @@ model UserStorageLimit {
 model Domain {
   id                String   @id @default(uuid())
   domain            String   @unique
-  owner             Int      // User ID as integer
+  owner             String   // User ID
   ownerUser         User     @relation(fields: [owner], references: [id], onDelete: Cascade)
   verified          Boolean  @default(false)
   verificationToken String?  @map("verification_token")
@@ -120,7 +120,7 @@ model Domain {
 // ============================================================================
 
 model Email {
-  id             Int                  @id @default(autoincrement())
+  id             String               @id @default(uuid())
   
   // Message identification (from your schema)
   messageId      String?              @unique @map("message_id")
@@ -164,11 +164,11 @@ model Email {
   
   // Thread & reply
   threadId       String?              @map("thread_id")
-  thread_id_ref  Int?                 @map("thread_id_ref")
+  thread_id_ref  String?              @map("thread_id_ref")
   threadRef      Email?               @relation("EmailThread", fields: [thread_id_ref], references: [id])
   threadEmails   Email[]              @relation("EmailThread")
   inReplyTo      String?              @map("in_reply_to")
-  reply_to_id    Int?                 @map("reply_to_id")
+  reply_to_id    String?              @map("reply_to_id")
   replyTo        Email?               @relation("EmailReply", fields: [reply_to_id], references: [id])
   replies        Email[]              @relation("EmailReply")
   
@@ -185,11 +185,11 @@ model Email {
   self_destruct  Boolean              @default(false) @map("self_destruct")
   
   // User ownership
-  user           Int?                 // User ID
+  user          String                 // User ID
   userInfo       User?                @relation(fields: [user], references: [id], onDelete: Cascade)
   
   // Additional user relation for sent emails
-  from_user_id   Int?                 @map("from_user_id")
+  from_user_id   String?                 @map("from_user_id")
   fromUser       User?                @relation("SentEmails", fields: [from_user_id], references: [id])
   
   // Timestamps
@@ -211,9 +211,9 @@ model Email {
 }
 
 model EmailStar {
-  email_id   Int      @map("email_id")
+  email_id   String   @map("email_id")
   email      Email    @relation(fields: [email_id], references: [id], onDelete: Cascade)
-  user_id    Int      @map("user_id")
+  user_id    String   @map("user_id")
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   starred_at DateTime @default(now()) @map("starred_at")
 
@@ -223,8 +223,8 @@ model EmailStar {
 }
 
 model EmailDraft {
-  id           Int      @id @default(autoincrement())
-  user_id      Int      @map("user_id")
+  id           String   @id @default(uuid())
+  user_id      String   @map("user_id")
   user         User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   to_address   String?  @map("to_address") @db.VarChar(255)
   subject      String?  @db.Text
@@ -243,8 +243,8 @@ model EmailDraft {
 // ============================================================================
 
 model Contact {
-  id            Int      @id @default(autoincrement())
-  user_id       Int      @map("user_id")
+  id            String   @id @default(uuid())
+  user_id       String   @map("user_id")
   user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   full_name     String   @map("full_name") @db.VarChar(255)
   email_address String   @map("email_address") @db.VarChar(255)
@@ -263,8 +263,8 @@ model Contact {
 // ============================================================================
 
 model Attachment {
-  id         Int       @id @default(autoincrement())
-  user_id    Int?      @map("user_id")
+  id         String    @id @default(uuid())
+  user_id    String?   @map("user_id")
   user       User?     @relation(fields: [user_id], references: [id], onDelete: SetNull)
   key        String    @unique @db.Text
   filename   String    @db.Text
@@ -272,7 +272,7 @@ model Attachment {
   type       String    @db.Text
   created_at DateTime  @default(now()) @map("created_at")
   expires_at DateTime? @map("expires_at")
-  email_id   Int?      @map("email_id")
+  email_id   String?   @map("email_id")
   email      Email?    @relation(fields: [email_id], references: [id], onDelete: SetNull)
   status     String    @default("pending") @db.Text
 
