@@ -1,11 +1,11 @@
 import { SMTPServer } from 'smtp-server';
 import { simpleParser } from 'mailparser';
-import postgres from 'postgres';
 import { sendToTraditionalEmail } from './email-bridge.js';
 import { parseSharpAddress, resolveSrv } from './dns-utils.js';
 import net from 'net';
+import { prisma, findUser, createEmail } from './lib/prisma.js';
+import { createHash } from 'crypto';
 
-const sql = postgres(process.env.DATABASE_URL);
 const DOMAIN = process.env.DOMAIN_NAME || 'localhost';
 const SMTP_PORT = +process.env.SMTP_PORT || 587;
 
@@ -92,14 +92,21 @@ export function createSMTPServer() {
 async function authenticateUser(username, password) {
     try {
         // Try API key authentication first
-        const apiKeyUser = await sql`
-            SELECT id, username, domain, is_banned
-            FROM users
-            WHERE api_key = ${password} AND is_banned = false
-        `;
+        const apiKeyUser = await prisma.user.findFirst({
+            where: {
+                api_key: password,
+                is_banned: false
+            },
+            select: {
+                id: true,
+                username: true,
+                domain: true,
+                is_banned: true
+            }
+        });
         
-        if (apiKeyUser.length > 0) {
-            return apiKeyUser[0];
+        if (apiKeyUser) {
+            return apiKeyUser;
         }
 
         // Try username@domain and password
@@ -112,19 +119,24 @@ async function authenticateUser(username, password) {
         }
 
         // Simple password hash verification (in production use bcrypt)
-        const { createHash } = await import('crypto');
         const passwordHash = createHash('sha256').update(password).digest('hex');
 
-        const users = await sql`
-            SELECT id, username, domain, is_banned
-            FROM users
-            WHERE username = ${user}
-            AND domain = ${domain}
-            AND password_hash = ${passwordHash}
-            AND is_banned = false
-        `;
+        const authenticatedUser = await prisma.user.findFirst({
+            where: {
+                username: user,
+                domain: domain,
+                password: passwordHash,
+                is_banned: false
+            },
+            select: {
+                id: true,
+                username: true,
+                domain: true,
+                is_banned: true
+            }
+        });
 
-        return users.length > 0 ? users[0] : null;
+        return authenticatedUser || null;
     } catch (error) {
         console.error('Authentication error:', error);
         return null;
@@ -137,28 +149,27 @@ async function sendLocally(from, to, subject, textBody, htmlBody) {
     const [fromUser, fromDomain] = from.split('@');
     
     // Verify recipient exists
-    const users = await sql`
-        SELECT id FROM users 
-        WHERE username = ${toUser} AND domain = ${toDomain}
-    `;
+    const user = await findUser(toUser, toDomain);
     
-    if (users.length === 0) {
+    if (!user) {
         console.log(`❌ ERROR: Recipient ${to} not found on this server`);
         throw new Error('Recipient not found on this server');
     }
 
-    const result = await sql`
-        INSERT INTO emails (
-            from_address, from_domain, to_address, to_domain,
-            subject, body, html_body, content_type, status, sent_at
-        ) VALUES (
-            ${from}, ${fromDomain}, ${to}, ${toDomain},
-            ${subject}, ${textBody}, ${htmlBody}, 'text/html', 'sent', NOW()
-        )
-        RETURNING id
-    `;
+    const email = await createEmail({
+        from_address: from,
+        from_domain: fromDomain,
+        to_address: to,
+        to_domain: toDomain,
+        subject: subject,
+        body: textBody,
+        html_body: htmlBody,
+        content_type: 'text/html',
+        status: 'sent',
+        sent_at: new Date()
+    });
     
-    console.log(`✅ Email #${result[0].id} delivered locally to ${to}`);
+    console.log(`✅ Email #${email.id} delivered locally to ${to}`);
 }
 
 // Legacy SHARP protocol sending (kept for compatibility, now using standard email format)
@@ -172,24 +183,24 @@ async function sendViaSHARP(from, to, subject, textBody, htmlBody) {
         // Check if local delivery
         if (tp.domain === DOMAIN) {
             // Local delivery
-            const users = await sql`
-                SELECT id FROM users 
-                WHERE username = ${tp.username} AND domain = ${tp.domain}
-            `;
+            const user = await findUser(tp.username, tp.domain);
             
-            if (users.length === 0) {
+            if (!user) {
                 throw new Error('Recipient not found on this server');
             }
 
-            await sql`
-                INSERT INTO emails (
-                    from_address, from_domain, to_address, to_domain,
-                    subject, body, html_body, content_type, status, sent_at
-                ) VALUES (
-                    ${from}, ${fp.domain}, ${to}, ${tp.domain},
-                    ${subject}, ${textBody}, ${htmlBody}, 'text/html', 'sent', NOW()
-                )
-            `;
+            await createEmail({
+                from_address: from,
+                from_domain: fp.domain,
+                to_address: to,
+                to_domain: tp.domain,
+                subject: subject,
+                body: textBody,
+                html_body: htmlBody,
+                content_type: 'text/html',
+                status: 'sent',
+                sent_at: new Date()
+            });
             
             console.log(`SMTP->SHARP: Local delivery to ${to}`);
             return;

@@ -1,6 +1,6 @@
 import net from 'net';
-import postgres from 'postgres';
-const sql = postgres(process.env.DATABASE_URL);
+import { prisma, findUser } from './lib/prisma.js';
+import { createHash } from 'crypto';
 const DOMAIN = process.env.DOMAIN_NAME || 'localhost';
 const IMAP_PORT = +process.env.IMAP_PORT || 143;
 
@@ -141,14 +141,21 @@ async function handleIMAPCommand(socket, command, state) {
 async function authenticateUser(username, password) {
     try {
         // Try API key
-        const apiKeyUser = await sql`
-            SELECT id, username, domain, is_banned
-            FROM users
-            WHERE api_key = ${password} AND is_banned = false
-        `;
+        const apiKeyUser = await prisma.user.findFirst({
+            where: {
+                api_key: password,
+                is_banned: false
+            },
+            select: {
+                id: true,
+                username: true,
+                domain: true,
+                is_banned: true
+            }
+        });
         
-        if (apiKeyUser.length > 0) {
-            return apiKeyUser[0];
+        if (apiKeyUser) {
+            return apiKeyUser;
         }
 
         // Try username@domain
@@ -160,19 +167,24 @@ async function authenticateUser(username, password) {
             domain = DOMAIN;
         }
 
-        const { createHash } = await import('crypto');
         const passwordHash = createHash('sha256').update(password).digest('hex');
 
-        const users = await sql`
-            SELECT id, username, domain, is_banned
-            FROM users
-            WHERE username = ${user}
-            AND domain = ${domain}
-            AND password_hash = ${passwordHash}
-            AND is_banned = false
-        `;
+        const authenticatedUser = await prisma.user.findFirst({
+            where: {
+                username: user,
+                domain: domain,
+                password: passwordHash,
+                is_banned: false
+            },
+            select: {
+                id: true,
+                username: true,
+                domain: true,
+                is_banned: true
+            }
+        });
 
-        return users.length > 0 ? users[0] : null;
+        return authenticatedUser || null;
     } catch (error) {
         console.error('IMAP authentication error:', error);
         return null;
@@ -182,47 +194,47 @@ async function authenticateUser(username, password) {
 async function getEmailCount(user, folder) {
     const address = `${user.username}@${user.domain}`;
     
-    let query;
+    let count = 0;
     switch (folder.toUpperCase()) {
         case 'INBOX':
-            query = sql`
-                SELECT COUNT(*) as count FROM emails 
-                WHERE to_address = ${address} 
-                AND status NOT IN ('spam', 'scheduled')
-            `;
+            count = await prisma.email.count({
+                where: {
+                    to_address: address,
+                    status: { notIn: ['spam', 'scheduled'] }
+                }
+            });
             break;
         case 'SENT':
-            query = sql`
-                SELECT COUNT(*) as count FROM emails 
-                WHERE from_address = ${address} 
-                AND status = 'sent'
-            `;
+            count = await prisma.email.count({
+                where: {
+                    from_address: address,
+                    status: 'sent'
+                }
+            });
             break;
         case 'DRAFTS':
-            query = sql`
-                SELECT COUNT(*) as count FROM email_drafts 
-                WHERE user_id = ${user.id}
-            `;
+            count = await prisma.emailDraft.count({
+                where: { user_id: user.id }
+            });
             break;
         case 'SPAM':
-            query = sql`
-                SELECT COUNT(*) as count FROM emails 
-                WHERE to_address = ${address} 
-                AND status = 'spam'
-            `;
+            count = await prisma.email.count({
+                where: {
+                    to_address: address,
+                    status: 'spam'
+                }
+            });
             break;
         case 'STARRED':
-            query = sql`
-                SELECT COUNT(*) as count FROM email_stars 
-                WHERE user_id = ${user.id}
-            `;
+            count = await prisma.emailStar.count({
+                where: { user_id: user.id }
+            });
             break;
         default:
-            query = sql`SELECT 0 as count`;
+            count = 0;
     }
     
-    const result = await query;
-    return result[0]?.count || 0;
+    return count;
 }
 
 async function fetchEmails(socket, tag, args, user, folder) {
@@ -238,22 +250,24 @@ async function fetchEmails(socket, tag, args, user, folder) {
     let emails;
     switch (folder.toUpperCase()) {
         case 'INBOX':
-            emails = await sql`
-                SELECT * FROM emails 
-                WHERE to_address = ${address} 
-                AND status NOT IN ('spam', 'scheduled')
-                ORDER BY sent_at DESC
-                LIMIT 50
-            `;
+            emails = await prisma.email.findMany({
+                where: {
+                    to_address: address,
+                    status: { notIn: ['spam', 'scheduled'] }
+                },
+                orderBy: { sent_at: 'desc' },
+                take: 50
+            });
             break;
         case 'SENT':
-            emails = await sql`
-                SELECT * FROM emails 
-                WHERE from_address = ${address} 
-                AND status = 'sent'
-                ORDER BY sent_at DESC
-                LIMIT 50
-            `;
+            emails = await prisma.email.findMany({
+                where: {
+                    from_address: address,
+                    status: 'sent'
+                },
+                orderBy: { sent_at: 'desc' },
+                take: 50
+            });
             break;
         default:
             emails = [];

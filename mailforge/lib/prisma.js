@@ -51,7 +51,10 @@ export async function createEmail(emailData) {
             thread_id_ref: emailData.thread_id,
             expires_at: emailData.expires_at,
             self_destruct: emailData.self_destruct || false,
-            sent_at: emailData.sent_at || new Date()
+            sent_at: emailData.sent_at || new Date(),
+            user: emailData.user,
+            folder: emailData.folder || 'inbox',
+            error_message: emailData.error_message
         }
     });
 }

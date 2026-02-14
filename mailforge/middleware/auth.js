@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { jwtVerify } from 'jose';
-import fetch from 'node-fetch';
 
 export const prisma = new PrismaClient();
 const secret = new TextEncoder().encode(process.env.JWT_SECRET);
@@ -54,7 +53,7 @@ export async function validateAuthToken(req, res, next) {
         // Get user by ID from JWT
         const userId = payload.userId || payload.id;
         const user = await prisma.user.findUnique({
-            where: { id: typeof userId === 'string' ? parseInt(userId) : userId }
+            where: { id: String(userId) }
         });
 
         if (!user || user.is_banned || !user.active) {

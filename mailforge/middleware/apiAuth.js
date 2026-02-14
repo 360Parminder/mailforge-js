@@ -47,7 +47,7 @@ export async function validateApiKey(req, res, next) {
         
         const user = await prisma.user.findUnique({
             where: {
-                id: typeof userId === 'string' ? parseInt(userId) : userId
+                id: String(userId)
             }
         });
 

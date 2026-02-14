@@ -1,7 +1,6 @@
 import express from 'express'
 import net from 'net'
 import cors from 'cors'
-import postgres from 'postgres'
 import { createHash } from 'crypto'
 import { resolveSrv, verifySharpDomain } from './dns-utils.js'
 import { validateAuthToken } from './middleware/auth.js'
@@ -31,18 +30,10 @@ const DOMAIN = process.env.DOMAIN_NAME || 'localhost'
 const USERNAME_REGEX = /^[a-zA-Z0-9_\-!$%&'*/?=^@.]+$/;
 const MAX_USERNAME_LENGTH = 20;
 
-const sql = postgres(process.env.DATABASE_URL)
-
 // Cleanup for pending emails
 setInterval(async () => {
     try {
-        await sql`
-            UPDATE emails 
-            SET status = 'failed',
-                error_message = 'Timed out while pending'
-            WHERE status = 'pending' 
-            AND sent_at < NOW() - INTERVAL '30 seconds'
-        `;
+        await cleanupPendingEmails();
     } catch (error) {
         console.error('Error updating stale pending emails:', error);
     }
@@ -51,30 +42,30 @@ setInterval(async () => {
 // Cleanup for expired emails
 setInterval(async () => {
     try {
-        const toDelete = await sql`
-        WITH RECURSIVE to_delete AS (
-            SELECT id
-            FROM emails
-            WHERE expires_at < NOW()
-                AND expires_at IS NOT NULL
-            UNION ALL
-            SELECT e.id
-            FROM emails e
-            JOIN to_delete td ON e.reply_to_id = td.id
-        )
-        SELECT id FROM to_delete
-        `;
+        const toDelete = await prisma.email.findMany({
+            where: {
+                expires_at: {
+                    lt: new Date()
+                },
+                NOT: {
+                    expires_at: null
+                }
+            },
+            select: { id: true }
+        });
 
         if (toDelete.length > 0) {
             const ids = toDelete.map(r => r.id);
-            await sql`
-                DELETE FROM attachments
-                WHERE email_id = ANY(${ids})
-            `;
-            await sql`
-                DELETE FROM emails
-                WHERE id = ANY(${ids})
-            `;
+            await prisma.attachment.deleteMany({
+                where: {
+                    email_id: { in: ids }
+                }
+            });
+            await prisma.email.deleteMany({
+                where: {
+                    id: { in: ids }
+                }
+            });
         }
     } catch (error) {
         console.error('Error cleaning up expired emails:', error);
@@ -84,10 +75,7 @@ setInterval(async () => {
 // Cleanup for used hashcash tokens
 setInterval(async () => {
     try {
-        const result = await sql`
-            DELETE FROM used_hashcash_tokens
-            WHERE expires_at < NOW()
-        `;
+        const result = await cleanupExpiredHashcash();
         if (result.count > 0) {
             console.log(`Cleaned up ${result.count} expired hashcash tokens.`);
         }
@@ -300,19 +288,22 @@ async function processEmail({ from, to, subject, body, content_type, html_body, 
         try {
             const hashcashDate = parseHashcashDate(hashcash.split(':')[2]);
             const tokenExpiry = new Date(hashcashDate.getTime() + 24 * 60 * 60 * 1000);
-            await sql`INSERT INTO used_hashcash_tokens (token, expires_at) VALUES (${hashcash}, ${tokenExpiry}) ON CONFLICT (token) DO NOTHING`;
+            await markHashcashUsed(hashcash, tokenExpiry);
         } catch (e) {
             console.error(`Failed to log used hashcash token ${hashcash} for SHARP email ${emailId}:`, e);
         }
     }
 
     if (emailId && attachments.length > 0) {
-        await sql`
-            UPDATE attachments 
-            SET email_id = ${emailId},
-                status = 'sent'
-            WHERE key = ANY(${attachments})
-        `;
+        await prisma.attachment.updateMany({
+            where: {
+                key: { in: attachments }
+            },
+            data: {
+                email_id: emailId,
+                status: 'sent'
+            }
+        });
     }
 }
 
@@ -477,29 +468,23 @@ async function sendEmailToRemoteServer(emailData) {
 
 async function processScheduledEmails() {
     try {
-        const emails = await sql`
-        SELECT * FROM emails 
-        WHERE status = 'scheduled'
-          AND scheduled_at IS NOT NULL
-          AND scheduled_at <= CURRENT_TIMESTAMP
-        ORDER BY scheduled_at ASC
-        LIMIT 10
-      `;
+        const emails = await getScheduledEmails();
+        
         for (const email of emails) {
             console.log(`Processing scheduled email ID ${email.id} scheduled for ${email.scheduled_at}`);
-            await sql`
-          UPDATE emails
-          SET status = 'sending',
-              sent_at = NOW()
-          WHERE id = ${email.id}
-        `;
+            await prisma.email.update({
+                where: { id: email.id },
+                data: {
+                    status: 'sending',
+                    sent_at: new Date()
+                }
+            });
             const to = parseSharpAddress(email.to_address);
             if (to.domain === DOMAIN) {
-                await sql`
-            UPDATE emails
-            SET status = 'sent'
-            WHERE id = ${email.id}
-          `;
+                await prisma.email.update({
+                    where: { id: email.id },
+                    data: { status: 'sent' }
+                });
                 console.log(
                     `Locally delivered scheduled email ID ${email.id}`
                 );
@@ -519,7 +504,10 @@ async function processScheduledEmails() {
                     // they are already sent as "spam" instantly, without scheduling, if weak hashcash
                     // hashcash: hashcash(email.to_address)
                 });
-                await sql`UPDATE emails SET status = 'sent' WHERE id = ${email.id}`;
+                await prisma.email.update({
+                    where: { id: email.id },
+                    data: { status: 'sent' }
+                });
                 console.log(
                     `Successfully sent scheduled email ID ${email.id}`
                 );
@@ -528,12 +516,13 @@ async function processScheduledEmails() {
                     `Failed to send scheduled email ID ${email.id}:`,
                     error
                 );
-                await sql`
-            UPDATE emails
-            SET status = 'failed',
-                error_message = ${error.message}
-            WHERE id = ${email.id}
-          `;
+                await prisma.email.update({
+                    where: { id: email.id },
+                    data: {
+                        status: 'failed',
+                        error_message: error.message
+                    }
+                });
             }
         }
     } catch (error) {
@@ -604,8 +593,8 @@ async function calculateSpamScore(header, resource) {
             return HASHCASH_THRESHOLDS.WEAK + 1;
         }
 
-        const existingToken = await sql`SELECT 1 FROM used_hashcash_tokens WHERE token = ${header}`;
-        if (existingToken.length > 0) {
+        const existingToken = await isHashcashUsed(header);
+        if (existingToken) {
             return HASHCASH_THRESHOLDS.REJECT;
         }
 
@@ -690,9 +679,8 @@ app.post('/send', validateApiKey, async (req, res) => {
         if (hashcash && spamScore < HASHCASH_THRESHOLDS.REJECT) {
             try {
                 const hashcashDate = parseHashcashDate(hashcash.split(':')[2]);
-
                 const tokenExpiry = new Date(hashcashDate.getTime() + 24 * 60 * 60 * 1000);
-                await sql`INSERT INTO used_hashcash_tokens (token, expires_at) VALUES (${hashcash}, ${tokenExpiry}) ON CONFLICT (token) DO NOTHING`;
+                await markHashcashUsed(hashcash, tokenExpiry);
             } catch (e) {
                 console.error(`Failed to log used hashcash token ${hashcash} for /send:`, e);
                 // proceed with email sending
@@ -705,7 +693,10 @@ app.post('/send', validateApiKey, async (req, res) => {
             logEntry = await logEmail(from, fp.domain, to, tp.domain, subject, body, content_type, html_body, status, scheduled_at, reply_to_id, thread_id, expires_at, self_destruct);
             emailId = logEntry[0]?.id;
             if (emailId && attachmentKeys.length > 0) {
-                await sql`UPDATE attachments SET email_id = ${emailId}, status = ${status} WHERE key = ANY(${attachmentKeys})`;
+                await prisma.attachment.updateMany({
+                    where: { key: { in: attachmentKeys } },
+                    data: { email_id: emailId, status: status }
+                });
             }
             return res.json({ success: true, scheduled: true, id: emailId });
         }
@@ -718,7 +709,10 @@ app.post('/send', validateApiKey, async (req, res) => {
             logEntry = await logEmail(from, fp.domain, to, tp.domain, subject, body, content_type, html_body, finalStatus, null, reply_to_id, thread_id, expires_at, self_destruct);
             emailId = logEntry[0]?.id;
             if (emailId && attachmentKeys.length > 0) {
-                await sql`UPDATE attachments SET email_id = ${emailId}, status = ${finalStatus} WHERE key = ANY(${attachmentKeys})`;
+                await prisma.attachment.updateMany({
+                    where: { key: { in: attachmentKeys } },
+                    data: { email_id: emailId, status: finalStatus }
+                });
             }
             return res.json({ success: true, id: emailId });
         }
@@ -732,12 +726,13 @@ app.post('/send', validateApiKey, async (req, res) => {
 
         if (emailId && attachmentKeys.length > 0) {
             console.log(`[Remote] Linking ${attachmentKeys.length} attachments to email ID ${emailId}:`, attachmentKeys);
-            await sql`
-                UPDATE attachments
-                SET email_id = ${emailId},
-                    status = 'sending' 
-                WHERE key = ANY(${attachmentKeys})
-            `;
+            await prisma.attachment.updateMany({
+                where: { key: { in: attachmentKeys } },
+                data: {
+                    email_id: emailId,
+                    status: 'sending'
+                }
+            });
         }
 
         // don't attempt remote delivery, just store as spam
@@ -762,17 +757,29 @@ app.post('/send', validateApiKey, async (req, res) => {
             );
 
             if (emailId) {
-                await sql`UPDATE emails SET status='sent', sent_at = NOW() WHERE id=${emailId}`;
+                await prisma.email.update({
+                    where: { id: emailId },
+                    data: { status: 'sent', sent_at: new Date() }
+                });
                 if (attachmentKeys.length > 0) {
-                    await sql`UPDATE attachments SET status='sent' WHERE key = ANY(${attachmentKeys})`;
+                    await prisma.attachment.updateMany({
+                        where: { key: { in: attachmentKeys } },
+                        data: { status: 'sent' }
+                    });
                 }
             }
             return res.json({ success: true, id: emailId });
         } catch (e) {
             if (emailId) {
-                await sql`UPDATE emails SET status='failed', error_message=${e.message} WHERE id=${emailId}`;
+                await prisma.email.update({
+                    where: { id: emailId },
+                    data: { status: 'failed', error_message: e.message }
+                });
                 if (attachmentKeys.length > 0) {
-                    await sql`UPDATE attachments SET status='failed' WHERE key = ANY(${attachmentKeys})`;
+                    await prisma.attachment.updateMany({
+                        where: { key: { in: attachmentKeys } },
+                        data: { status: 'failed' }
+                    });
                 }
             }
             throw e;
@@ -780,12 +787,21 @@ app.post('/send', validateApiKey, async (req, res) => {
     } catch (e) {
         console.error('Request failed:', e);
         if (emailId) {
-            const checkStatus = await sql`SELECT status FROM emails WHERE id=${emailId}`;
-            if (checkStatus.length > 0 && !['failed', 'rejected', 'spam'].includes(checkStatus[0].status)) {
-                await sql`UPDATE emails SET status='failed', error_message=${e.message} WHERE id=${emailId}`;
+            const checkStatus = await prisma.email.findUnique({
+                where: { id: emailId },
+                select: { status: true }
+            });
+            if (checkStatus && !['failed', 'rejected', 'spam'].includes(checkStatus.status)) {
+                await prisma.email.update({
+                    where: { id: emailId },
+                    data: { status: 'failed', error_message: e.message }
+                });
                 const attachmentKeys = req.body.attachments?.map(att => att.key).filter(Boolean) || [];
                 if (attachmentKeys.length > 0) {
-                    await sql`UPDATE attachments SET status='failed' WHERE email_id = ${emailId}`;
+                    await prisma.attachment.updateMany({
+                        where: { email_id: emailId },
+                        data: { status: 'failed' }
+                    });
                 }
             }
         }
@@ -857,9 +873,8 @@ app.post('/send/jwt', validateAuthToken, async (req, res) => {
         if (hashcash && spamScore < HASHCASH_THRESHOLDS.REJECT) {
             try {
                 const hashcashDate = parseHashcashDate(hashcash.split(':')[2]);
-
                 const tokenExpiry = new Date(hashcashDate.getTime() + 24 * 60 * 60 * 1000);
-                await sql`INSERT INTO used_hashcash_tokens (token, expires_at) VALUES (${hashcash}, ${tokenExpiry}) ON CONFLICT (token) DO NOTHING`;
+                await markHashcashUsed(hashcash, tokenExpiry);
             } catch (e) {
                 console.error(`Failed to log used hashcash token ${hashcash} for /send/jwt:`, e);
                 // proceed with email sending
@@ -872,7 +887,10 @@ app.post('/send/jwt', validateAuthToken, async (req, res) => {
             logEntry = await logEmail(from, fp.domain, to, tp.domain, subject, body, content_type, html_body, status, scheduled_at, reply_to_id, thread_id, expires_at, self_destruct);
             emailId = logEntry[0]?.id;
             if (emailId && attachmentKeys.length > 0) {
-                await sql`UPDATE attachments SET email_id = ${emailId}, status = ${status} WHERE key = ANY(${attachmentKeys})`;
+                await prisma.attachment.updateMany({
+                    where: { key: { in: attachmentKeys } },
+                    data: { email_id: emailId, status: status }
+                });
             }
             return res.json({ success: true, scheduled: true, id: emailId });
         }
@@ -885,7 +903,10 @@ app.post('/send/jwt', validateAuthToken, async (req, res) => {
             logEntry = await logEmail(from, fp.domain, to, tp.domain, subject, body, content_type, html_body, finalStatus, null, reply_to_id, thread_id, expires_at, self_destruct);
             emailId = logEntry[0]?.id;
             if (emailId && attachmentKeys.length > 0) {
-                await sql`UPDATE attachments SET email_id = ${emailId}, status = ${finalStatus} WHERE key = ANY(${attachmentKeys})`;
+                await prisma.attachment.updateMany({
+                    where: { key: { in: attachmentKeys } },
+                    data: { email_id: emailId, status: finalStatus }
+                });
             }
             return res.json({ success: true, id: emailId });
         }
@@ -899,20 +920,27 @@ app.post('/send/jwt', validateAuthToken, async (req, res) => {
 
         if (emailId && attachmentKeys.length > 0) {
             console.log(`[Remote JWT] Linking ${attachmentKeys.length} attachments to email ID ${emailId}:`, attachmentKeys);
-            await sql`
-                UPDATE attachments
-                SET email_id = ${emailId},
-                    status = 'sending' 
-                WHERE key = ANY(${attachmentKeys})
-            `;
+            await prisma.attachment.updateMany({
+                where: { key: { in: attachmentKeys } },
+                data: {
+                    email_id: emailId,
+                    status: 'sending'
+                }
+            });
         }
 
         // don't attempt remote delivery, just store as spam
         if (status === 'spam') {
             if (emailId) {
-                await sql`UPDATE emails SET status='spam' WHERE id=${emailId}`;
+                await prisma.email.update({
+                    where: { id: emailId },
+                    data: { status: 'spam' }
+                });
                 if (attachmentKeys.length > 0) {
-                    await sql`UPDATE attachments SET status='spam' WHERE email_id = ${emailId}`;
+                    await prisma.attachment.updateMany({
+                        where: { email_id: emailId },
+                        data: { status: 'spam' }
+                    });
                 }
             }
             return res.json({ success: true, id: emailId, message: "Email marked as spam due to low PoW or Turnstile policy." });
@@ -933,26 +961,47 @@ app.post('/send/jwt', validateAuthToken, async (req, res) => {
 
             if (result.responses?.some(r => r.type === 'ERROR')) {
                 if (emailId) {
-                    await sql`UPDATE emails SET status='rejected', error_message = ${result.responses.find(r => r.type === 'ERROR')?.message || 'Remote server rejected'} WHERE id=${emailId}`;
+                    await prisma.email.update({
+                        where: { id: emailId },
+                        data: {
+                            status: 'rejected',
+                            error_message: result.responses.find(r => r.type === 'ERROR')?.message || 'Remote server rejected'
+                        }
+                    });
                     if (attachmentKeys.length > 0) {
-                        await sql`UPDATE attachments SET status='rejected' WHERE key = ANY(${attachmentKeys})`;
+                        await prisma.attachment.updateMany({
+                            where: { key: { in: attachmentKeys } },
+                            data: { status: 'rejected' }
+                        });
                     }
                 }
                 return res.status(400).json({ success: false, message: 'Remote server rejected the email' })
             }
 
             if (emailId) {
-                await sql`UPDATE emails SET status='sent', sent_at = NOW() WHERE id=${emailId}`;
+                await prisma.email.update({
+                    where: { id: emailId },
+                    data: { status: 'sent', sent_at: new Date() }
+                });
                 if (attachmentKeys.length > 0) {
-                    await sql`UPDATE attachments SET status='sent' WHERE key = ANY(${attachmentKeys})`;
+                    await prisma.attachment.updateMany({
+                        where: { key: { in: attachmentKeys } },
+                        data: { status: 'sent' }
+                    });
                 }
             }
             return res.json({ ...result, id: emailId });
         } catch (e) {
             if (emailId) {
-                await sql`UPDATE emails SET status='failed', error_message=${e.message} WHERE id=${emailId}`;
+                await prisma.email.update({
+                    where: { id: emailId },
+                    data: { status: 'failed', error_message: e.message }
+                });
                 if (attachmentKeys.length > 0) {
-                    await sql`UPDATE attachments SET status='failed' WHERE key = ANY(${attachmentKeys})`;
+                    await prisma.attachment.updateMany({
+                        where: { key: { in: attachmentKeys } },
+                        data: { status: 'failed' }
+                    });
                 }
             }
             throw e;
@@ -960,12 +1009,21 @@ app.post('/send/jwt', validateAuthToken, async (req, res) => {
     } catch (e) {
         console.error('Request failed:', e);
         if (emailId) {
-            const checkStatus = await sql`SELECT status FROM emails WHERE id=${emailId}`;
-            if (checkStatus.length > 0 && !['failed', 'rejected', 'spam'].includes(checkStatus[0].status)) {
-                await sql`UPDATE emails SET status='failed', error_message=${e.message} WHERE id=${emailId}`;
+            const checkStatus = await prisma.email.findUnique({
+                where: { id: emailId },
+                select: { status: true }
+            });
+            if (checkStatus && !['failed', 'rejected', 'spam'].includes(checkStatus.status)) {
+                await prisma.email.update({
+                    where: { id: emailId },
+                    data: { status: 'failed', error_message: e.message }
+                });
                 const attachmentKeys = req.body.attachments?.map(att => att.key).filter(Boolean) || [];
                 if (attachmentKeys.length > 0) {
-                    await sql`UPDATE attachments SET status='failed' WHERE email_id = ${emailId}`;
+                    await prisma.attachment.updateMany({
+                        where: { email_id: emailId },
+                        data: { status: 'failed' }
+                    });
                 }
             }
         }
