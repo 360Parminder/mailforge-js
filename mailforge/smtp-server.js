@@ -157,6 +157,7 @@ async function sendLocally(from, to, subject, textBody, htmlBody) {
     }
 
     const email = await createEmail({
+        user: user.id,
         from_address: from,
         from_domain: fromDomain,
         to_address: to,
@@ -190,6 +191,7 @@ async function sendViaSHARP(from, to, subject, textBody, htmlBody) {
             }
 
             await createEmail({
+                user: user.id,
                 from_address: from,
                 from_domain: fp.domain,
                 to_address: to,

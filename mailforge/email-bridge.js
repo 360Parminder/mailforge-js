@@ -48,7 +48,9 @@ export async function sendToTraditionalEmail(fromEmail, toEmail, subject, textBo
         
         // Log the sent email
         const [fromUser, fromDomain] = fromEmail.split('@');
+        const sender = await findUser(fromUser, fromDomain);
         const email = await createEmail({
+            user: sender?.id || 'system',
             from_address: fromEmail,
             from_domain: fromDomain,
             to_address: toEmail,
@@ -69,7 +71,9 @@ export async function sendToTraditionalEmail(fromEmail, toEmail, subject, textBo
         // Log as failed
         const [fromUser, fromDomain] = fromEmail.split('@');
         const [toUser, toDomain] = toEmail.split('@');
+        const sender = await findUser(fromUser, fromDomain);
         await createEmail({
+            user: sender?.id || 'system',
             from_address: fromEmail,
             from_domain: fromDomain,
             to_address: toEmail,
