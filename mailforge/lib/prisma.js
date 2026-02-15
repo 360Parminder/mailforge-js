@@ -32,6 +32,7 @@ export async function createUser(data) {
 
 // Email operations
 export async function createEmail(emailData) {
+    console.log('Creating email with data:', emailData);
     const data = {
         from_address: emailData.from_address,
         from_domain: emailData.from_domain,
@@ -62,7 +63,7 @@ export async function createEmail(emailData) {
     if (emailData.thread_id || emailData.thread_id_ref) {
         data.thread_id_ref = emailData.thread_id || emailData.thread_id_ref;
     }
-
+    
     if (emailData.from_user_id) {
         data.from_user_id = emailData.from_user_id;
     }

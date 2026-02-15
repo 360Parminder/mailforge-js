@@ -115,7 +115,20 @@ const HASHCASH_THRESHOLDS = {
 // logEmail helper function using Prisma
 const logEmail = async (fa, fd, ta, td, s, b, ct = 'text/plain', hb = null, st = 'pending', sa = null, rid = null, tid = null, ea = null, sd = false) => {
     const classification = classifyEmail(s, b, hb);
+    
+    // Determine which user to associate the email with
+    // For incoming/received emails (status: sent), use the recipient (to)
+    // For outgoing/pending emails, try sender first, then recipient
+    let user = null;
+    if (st === 'sent' || st === 'delivered') {
+        user = await findUser(ta.split('@')[0], td);
+    }
+    if (!user) {
+        user = await findUser(fa.split('@')[0], fd);
+    }
+    
     const email = await createEmail({
+        user: user?.id || 'system',
         from_address: fa,
         from_domain: fd,
         to_address: ta,
