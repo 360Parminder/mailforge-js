@@ -32,31 +32,42 @@ export async function createUser(data) {
 
 // Email operations
 export async function createEmail(emailData) {
-    return await prisma.email.create({
-        data: {
-            from_address: emailData.from_address,
-            from_domain: emailData.from_domain,
-            to_address: emailData.to_address,
-            to_domain: emailData.to_domain,
-            subject: emailData.subject,
-            body: emailData.body,
-            text: emailData.body,
-            html: emailData.html_body,
-            html_body: emailData.html_body,
-            content_type: emailData.content_type || 'text/plain',
-            status: emailData.status || 'pending',
-            classification: emailData.classification || 'primary',
-            scheduled_at: emailData.scheduled_at,
-            reply_to_id: emailData.reply_to_id,
-            thread_id_ref: emailData.thread_id,
-            expires_at: emailData.expires_at,
-            self_destruct: emailData.self_destruct || false,
-            sent_at: emailData.sent_at || new Date(),
-            user: emailData.user,
-            folder: emailData.folder || 'inbox',
-            error_message: emailData.error_message
-        }
-    });
+    const data = {
+        from_address: emailData.from_address,
+        from_domain: emailData.from_domain,
+        to_address: emailData.to_address,
+        to_domain: emailData.to_domain,
+        subject: emailData.subject,
+        body: emailData.body,
+        text: emailData.body,
+        html: emailData.html_body,
+        html_body: emailData.html_body,
+        content_type: emailData.content_type || 'text/plain',
+        status: emailData.status || 'pending',
+        classification: emailData.classification || 'primary',
+        scheduled_at: emailData.scheduled_at,
+        expires_at: emailData.expires_at,
+        self_destruct: emailData.self_destruct || false,
+        sent_at: emailData.sent_at || new Date(),
+        user: emailData.user || emailData.user_id,
+        folder: emailData.folder || 'inbox',
+        error_message: emailData.error_message
+    };
+
+    // Add optional relation fields only if provided
+    if (emailData.reply_to_id) {
+        data.reply_to_id = emailData.reply_to_id;
+    }
+    
+    if (emailData.thread_id || emailData.thread_id_ref) {
+        data.thread_id_ref = emailData.thread_id || emailData.thread_id_ref;
+    }
+
+    if (emailData.from_user_id) {
+        data.from_user_id = emailData.from_user_id;
+    }
+
+    return await prisma.email.create({ data });
 }
 
 export async function updateEmailStatus(emailId, status, errorMessage = null) {

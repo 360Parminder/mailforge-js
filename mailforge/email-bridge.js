@@ -101,8 +101,10 @@ export function createBridgeReceiver() {
                     console.error('Error parsing incoming email:', err);
                     return callback(err);
                 }
-
+                
+                
                 try {
+                    console.log(parsed);
                     const fromEmail = parsed.from?.value?.[0]?.address || '';
                     const toEmail = parsed.to?.value?.[0]?.address || '';
                     const subject = parsed.subject || '(No Subject)';
@@ -143,7 +145,10 @@ export function createBridgeReceiver() {
                         content_type: 'text/html',
                         status: 'sent',
                         folder: 'inbox',
-                        sent_at: new Date()
+                        sent_at: new Date(),
+                        userInfo:user.id,
+                        messageId : parsed.messageId || null
+                        
                     });
 
                     console.log(`✅ Email #${email.id} successfully delivered to ${toEmail}`);
