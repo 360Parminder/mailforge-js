@@ -32,22 +32,10 @@ const sql = postgres(DATABASE_URL);
 
 async function initializeDatabase() {
     try {
-        // Read init.sql
-        const initSql = readFileSync(join(__dirname, 'database', 'init.sql'), 'utf-8');
+        // Note: Database schema is managed by Prisma migrations from the app server
+        // This script only verifies the database connection
         
-        console.log('📦 Creating database schema...');
-        
-        // Execute the init.sql (postgres library handles multiple statements)
-        await sql.unsafe(initSql);
-        
-        console.log('✅ Database schema created successfully');
-        
-        // Now run the API key migration
-        console.log('🔑 Adding API key support...');
-        const apiKeyMigration = readFileSync(join(__dirname, 'database', 'migrations', 'add-api-keys.sql'), 'utf-8');
-        await sql.unsafe(apiKeyMigration);
-        
-        console.log('✅ API key migration applied');
+        console.log('🔍 Verifying database connection...');
         
         // Check tables
         const tables = await sql`
@@ -60,12 +48,12 @@ async function initializeDatabase() {
         console.log('\n📋 Database tables:');
         tables.forEach(t => console.log(`  - ${t.table_name}`));
         
-        console.log('\n🎉 Database initialization complete!');
+        console.log('\n✅ Database connection verified!');
+        console.log('\n📝 Note: Database schema is managed by Prisma migrations from your app server');
         console.log('\n📝 Next steps:');
-        console.log('1. Create a user account:');
-        console.log('   Run: bun run create-user.js');
-        console.log('2. Start the server:');
-        console.log('   Run: bun main.js');
+        console.log('1. Ensure Prisma migrations are applied on app server');
+        console.log('2. Create a user account: bun run create-user.js');
+        console.log('3. Start the server: bun main.js');
         
     } catch (error) {
         console.error('❌ Error initializing database:', error.message);

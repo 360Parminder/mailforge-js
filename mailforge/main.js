@@ -738,9 +738,12 @@ app.post('/send', validateApiKey, async (req, res) => {
         // don't attempt remote delivery, just store as spam
         if (status === 'spam') {
             if (emailId) {
-                await sql`UPDATE emails SET status='spam' WHERE id=${emailId}`;
+                await updateEmailStatus(emailId, 'spam');
                 if (attachmentKeys.length > 0) {
-                    await sql`UPDATE attachments SET status='spam' WHERE email_id = ${emailId}`;
+                    await prisma.attachment.updateMany({
+                        where: { email_id: emailId },
+                        data: { status: 'spam' }
+                    });
                 }
             }
             return res.json({ success: true, id: emailId, message: "Email marked as spam due to low PoW or Turnstile policy." });
