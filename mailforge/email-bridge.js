@@ -60,7 +60,8 @@ export async function sendToTraditionalEmail(fromEmail, toEmail, subject, textBo
             html_body: htmlBody,
             content_type: 'text/html',
             status: 'sent',
-            sent_at: new Date()
+            sent_at: new Date(),
+            folder: 'sent',
         });
 
         console.log(`✅ Email #${email.id} sent successfully to ${toEmail} (MessageID: ${info.messageId})`);
