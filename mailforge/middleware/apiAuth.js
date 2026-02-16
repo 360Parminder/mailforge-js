@@ -1,58 +1,82 @@
 import { PrismaClient } from '@prisma/client';
-import { jwtVerify } from 'jose';
 
 const prisma = new PrismaClient();
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
+
+// API key from environment variable for app server authentication
+const APP_SERVER_API_KEY = process.env.APP_SERVER_API_KEY;
 
 /**
- * Middleware to validate JWT token authentication
+ * Middleware to validate API key authentication
  * This allows the app server to authenticate with MailForge server
- * using shared JWT tokens
+ * using a shared API key from environment variables
  */
 export async function validateApiKey(req, res, next) {
-    const token = req.headers['x-api-key'] || req.headers['authorization']?.replace('Bearer ', '');
+    const apiKey = req.headers['x-api-key'] || req.headers['authorization']?.replace('Bearer ', '');
     
     console.log('🔑 API Auth - Received headers:', {
         'x-api-key': req.headers['x-api-key'] ? 'present' : 'missing',
-        'authorization': req.headers['authorization'] ? 'present' : 'missing',
-        'token': token ? `${token.substring(0, 20)}...` : 'missing'
+        'authorization': req.headers['authorization'] ? 'present' : 'missing'
     });
     
-    if (!token) {
+    if (!apiKey) {
         return res.status(401).json({
             success: false,
-            message: 'Authentication token required. Include X-API-Key or Authorization header.'
+            message: 'API key required. Include X-API-Key or Authorization header.'
         });
     }
 
+    // Check if APP_SERVER_API_KEY is configured
+    if (!APP_SERVER_API_KEY) {
+        console.error('❌ APP_SERVER_API_KEY is not configured in environment variables');
+        return res.status(500).json({
+            success: false,
+            message: 'Server configuration error: API key not configured'
+        });
+    }
+
+    // Verify API key matches
+    if (apiKey !== APP_SERVER_API_KEY) {
+        console.log('❌ Invalid API key provided');
+        return res.status(401).json({
+            success: false,
+            message: 'Invalid API key'
+        });
+    }
+
+    console.log('✅ API key verified successfully');
+
+    // Get user from request body (from address)
     try {
-        console.log('🔐 Verifying JWT token...');
-        console.log('🔐 JWT_SECRET available:', !!JWT_SECRET, 'length:', JWT_SECRET?.length);
-        
-        // Verify JWT token
-        const { payload } = await jwtVerify(token, JWT_SECRET);
-        console.log('✅ JWT verified. Payload:', payload);
-        
-        if (!payload.id && !payload.userId) {
-            console.log('❌ Invalid payload - no id or userId field');
-            return res.status(401).json({
+        const fromAddress = req.body?.from;
+        if (!fromAddress) {
+            return res.status(400).json({
                 success: false,
-                message: 'Invalid token payload'
+                message: 'Missing "from" address in request body'
             });
         }
 
-        // Get user from database
-        const userId = payload.id || payload.userId;
-        console.log('🔍 Looking up user ID:', userId, 'type:', typeof userId);
-        
-        const user = await prisma.user.findUnique({
+        // Parse the from address to get username and domain
+        const match = fromAddress.match(/^(.+)@([^:]+)(?::(\d+))?$/);
+        if (!match) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid "from" address format'
+            });
+        }
+
+        const username = match[1].toLowerCase();
+        const domain = match[2].toLowerCase();
+
+        // Find user in database
+        const user = await prisma.user.findFirst({
             where: {
-                id: String(userId)
+                username: username,
+                domain: domain
             }
         });
 
         if (!user) {
-            console.log('❌ User not found in database for ID:', userId);
+            console.log('❌ User not found:', username, '@', domain);
             return res.status(401).json({
                 success: false,
                 message: 'User not found'
@@ -69,15 +93,14 @@ export async function validateApiKey(req, res, next) {
         }
 
         req.user = user;
-        req.turnstileVerified = true; // Skip Turnstile for JWT auth
+        req.turnstileVerified = true; // Skip Turnstile for API key auth
         console.log('✅ Authentication successful for user:', user.username);
         next();
     } catch (error) {
-        console.error('❌ JWT Auth error:', error.message);
-        console.error('Full error:', error);
-        return res.status(401).json({
+        console.error('❌ API Auth error:', error.message);
+        return res.status(500).json({
             success: false,
-            message: 'Invalid or expired token',
+            message: 'Authentication error',
             error: error.message
         });
     }

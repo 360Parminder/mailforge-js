@@ -3,7 +3,6 @@ import net from 'net'
 import cors from 'cors'
 import { createHash } from 'crypto'
 import { resolveSrv, verifySharpDomain } from './dns-utils.js'
-import { validateAuthToken } from './middleware/auth.js'
 import { validateApiKey } from './middleware/apiAuth.js'
 import { createSMTPServer } from './smtp-server.js'
 import { createIMAPServer } from './imap-server.js'
@@ -825,228 +824,6 @@ app.post('/send', validateApiKey, async (req, res) => {
     }
 })
 
-// Alternative endpoint: JWT authentication (for Twoblade website integration)
-app.post('/send/jwt', validateAuthToken, async (req, res) => {
-    let logEntry;
-    let emailId;
-    try {
-        const { hashcash, ...emailData } = req.body;
-
-        let fp, tp;
-        try {
-            fp = parseSharpAddress(emailData.from);
-            tp = parseSharpAddress(emailData.to);
-        } catch {
-            return res.status(400).json({
-                success: false,
-                message: 'Invalid SHARP address format'
-            });
-        }
-
-        if (!req.turnstileVerified) {
-            return res.status(403).json({
-                success: false,
-                message: 'Turnstile verification failed. Please try again.'
-            });
-        }
-
-        const spamScore = await calculateSpamScore(hashcash, emailData.to);
-        let status = 'pending';
-
-        if (!hashcash || spamScore >= HASHCASH_THRESHOLDS.REJECT) {
-            return res.status(429).json({
-                success: false,
-                message: `Insufficient proof of work or invalid/reused token. Required: ${HASHCASH_THRESHOLDS.TRIVIAL} bits. Score: ${spamScore}.`
-            });
-        }
-
-        if (spamScore > 0) {
-            status = 'spam';
-        }
-
-        if (emailData.scheduled_at && status !== 'spam') {
-            status = 'scheduled';
-        }
-
-        const { from, to, subject, body, content_type = 'text/plain',
-            html_body, scheduled_at, reply_to_id, thread_id,
-            attachments = [], expires_at = null, self_destruct = false } = emailData;
-
-        if (fp.username !== req.user.username || fp.domain !== req.user.domain) {
-            return res.status(403).json({
-                success: false,
-                message: 'You can only send emails from your own address.'
-            });
-        }
-
-        if (fp.domain !== DOMAIN) {
-            return res.status(403).json({
-                success: false,
-                message: `This server does not relay mail for the domain ${fp.domain}`
-            });
-        }
-
-        if (hashcash && spamScore < HASHCASH_THRESHOLDS.REJECT) {
-            try {
-                const hashcashDate = parseHashcashDate(hashcash.split(':')[2]);
-                const tokenExpiry = new Date(hashcashDate.getTime() + 24 * 60 * 60 * 1000);
-                await markHashcashUsed(hashcash, tokenExpiry);
-            } catch (e) {
-                console.error(`Failed to log used hashcash token ${hashcash} for /send/jwt:`, e);
-                // proceed with email sending
-            }
-        }
-
-        const attachmentKeys = attachments.map(att => att.key).filter(Boolean);
-
-        if (scheduled_at && status === 'scheduled') {
-            logEntry = await logEmail(from, fp.domain, to, tp.domain, subject, body, content_type, html_body, status, scheduled_at, reply_to_id, thread_id, expires_at, self_destruct);
-            emailId = logEntry[0]?.id;
-            if (emailId && attachmentKeys.length > 0) {
-                await prisma.attachment.updateMany({
-                    where: { key: { in: attachmentKeys } },
-                    data: { email_id: emailId, status: status }
-                });
-            }
-            return res.json({ success: true, scheduled: true, id: emailId });
-        }
-
-        if (tp.domain === DOMAIN) {
-            if (!await verifyUser(tp.username, tp.domain)) {
-                return res.status(404).json({ success: false, message: 'Recipient user not found on this server' });
-            }
-            const finalStatus = status === 'pending' ? 'sent' : status;
-            logEntry = await logEmail(from, fp.domain, to, tp.domain, subject, body, content_type, html_body, finalStatus, null, reply_to_id, thread_id, expires_at, self_destruct);
-            emailId = logEntry[0]?.id;
-            if (emailId && attachmentKeys.length > 0) {
-                await prisma.attachment.updateMany({
-                    where: { key: { in: attachmentKeys } },
-                    data: { email_id: emailId, status: finalStatus }
-                });
-            }
-            return res.json({ success: true, id: emailId });
-        }
-
-        logEntry = await logEmail(
-            from, fp.domain, to, tp.domain, subject, body,
-            content_type, html_body, status, scheduled_at,
-            reply_to_id, thread_id, expires_at, self_destruct
-        );
-        emailId = logEntry[0]?.id;
-
-        if (emailId && attachmentKeys.length > 0) {
-            console.log(`[Remote JWT] Linking ${attachmentKeys.length} attachments to email ID ${emailId}:`, attachmentKeys);
-            await prisma.attachment.updateMany({
-                where: { key: { in: attachmentKeys } },
-                data: {
-                    email_id: emailId,
-                    status: 'sending'
-                }
-            });
-        }
-
-        // don't attempt remote delivery, just store as spam
-        if (status === 'spam') {
-            if (emailId) {
-                await prisma.email.update({
-                    where: { id: emailId },
-                    data: { status: 'spam' }
-                });
-                if (attachmentKeys.length > 0) {
-                    await prisma.attachment.updateMany({
-                        where: { email_id: emailId },
-                        data: { status: 'spam' }
-                    });
-                }
-            }
-            return res.json({ success: true, id: emailId, message: "Email marked as spam due to low PoW or Turnstile policy." });
-        }
-
-
-        try {
-            const result = await Promise.race([
-                sendEmailToRemoteServer({
-                    from, to, subject, body, content_type, html_body,
-                    attachments: attachmentKeys,
-                    hashcash: hashcash
-                }),
-                new Promise((_, r) => setTimeout(() => {
-                    r(new Error('Connection timed out'))
-                }, 10000))
-            ])
-
-            if (result.responses?.some(r => r.type === 'ERROR')) {
-                if (emailId) {
-                    await prisma.email.update({
-                        where: { id: emailId },
-                        data: {
-                            status: 'rejected',
-                            error_message: result.responses.find(r => r.type === 'ERROR')?.message || 'Remote server rejected'
-                        }
-                    });
-                    if (attachmentKeys.length > 0) {
-                        await prisma.attachment.updateMany({
-                            where: { key: { in: attachmentKeys } },
-                            data: { status: 'rejected' }
-                        });
-                    }
-                }
-                return res.status(400).json({ success: false, message: 'Remote server rejected the email' })
-            }
-
-            if (emailId) {
-                await prisma.email.update({
-                    where: { id: emailId },
-                    data: { status: 'sent', sent_at: new Date() }
-                });
-                if (attachmentKeys.length > 0) {
-                    await prisma.attachment.updateMany({
-                        where: { key: { in: attachmentKeys } },
-                        data: { status: 'sent' }
-                    });
-                }
-            }
-            return res.json({ ...result, id: emailId });
-        } catch (e) {
-            if (emailId) {
-                await prisma.email.update({
-                    where: { id: emailId },
-                    data: { status: 'failed', error_message: e.message }
-                });
-                if (attachmentKeys.length > 0) {
-                    await prisma.attachment.updateMany({
-                        where: { key: { in: attachmentKeys } },
-                        data: { status: 'failed' }
-                    });
-                }
-            }
-            throw e;
-        }
-    } catch (e) {
-        console.error('Request failed:', e);
-        if (emailId) {
-            const checkStatus = await prisma.email.findUnique({
-                where: { id: emailId },
-                select: { status: true }
-            });
-            if (checkStatus && !['failed', 'rejected', 'spam'].includes(checkStatus.status)) {
-                await prisma.email.update({
-                    where: { id: emailId },
-                    data: { status: 'failed', error_message: e.message }
-                });
-                const attachmentKeys = req.body.attachments?.map(att => att.key).filter(Boolean) || [];
-                if (attachmentKeys.length > 0) {
-                    await prisma.attachment.updateMany({
-                        where: { email_id: emailId },
-                        data: { status: 'failed' }
-                    });
-                }
-            }
-        }
-        return res.status(400).json({ success: false, message: e.message })
-    }
-})
-
 app.get('/server/health', (_, res) =>
     res.json({
         status: 'ok',
@@ -1078,7 +855,7 @@ app.get('/server/info', (_, res) =>
             rejectBits: HASHCASH_THRESHOLDS.REJECT
         },
         features: {
-            authentication: ['api-key', 'jwt'],
+            authentication: ['api-key'],
             turnstile: !!process.env.PRIVATE_TURNSTILE_SECRET_KEY && 
                        process.env.PRIVATE_TURNSTILE_SECRET_KEY !== '1x0000000000000000000000000000000AA',
             scheduled_emails: true,
@@ -1087,17 +864,11 @@ app.get('/server/info', (_, res) =>
             classification: true
         },
         endpoints: {
-            send_api_key: {
+            send: {
                 method: 'POST',
                 path: '/send',
-                auth: 'X-API-Key header',
-                description: 'Send email with API key authentication (recommended for external frontends)'
-            },
-            send_jwt: {
-                method: 'POST',
-                path: '/send/jwt',
-                auth: 'Authorization: Bearer <token>',
-                description: 'Send email with JWT authentication (for Twoblade website)'
+                auth: 'X-API-Key header (APP_SERVER_API_KEY from .env)',
+                description: 'Send email with API key authentication'
             },
             health: {
                 method: 'GET',
@@ -1117,9 +888,8 @@ app.get('/server/info', (_, res) =>
             origins: process.env.ALLOWED_ORIGINS || '*'
         },
         usage: {
-            example_curl: `curl -X POST http://localhost:${HTTP_PORT}/send \\\n  -H 'X-API-Key: your-api-key-here' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n    "from": "user#${DOMAIN}",\n    "to": "recipient#other.com",\n    "subject": "Test Email",\n    "body": "Hello World",\n    "content_type": "text/plain",\n    "hashcash": "1:18:250208120000:recipient#other.com::xxxx:yyyy"\n  }'`,
-            api_key_generation: 'Run SQL: SELECT generate_api_key(user_id);',
-            api_key_revocation: 'Run SQL: SELECT revoke_api_key(user_id);'
+            example_curl: `curl -X POST http://localhost:${HTTP_PORT}/send \\\n  -H 'X-API-Key: <APP_SERVER_API_KEY from .env>' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n    "from": "user@${DOMAIN}",\n    "to": "recipient@other.com",\n    "subject": "Test Email",\n    "body": "Hello World",\n    "content_type": "text/plain",\n    "hashcash": "1:18:250208120000:recipient@other.com::xxxx:yyyy"\n  }'`,
+            api_key_setup: 'Set APP_SERVER_API_KEY in your .env file'
         }
     })
 )
