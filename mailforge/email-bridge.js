@@ -7,6 +7,7 @@ const DOMAIN = process.env.DOMAIN_NAME || 'localhost';
 const SMTP_BRIDGE_PORT = +process.env.SMTP_BRIDGE_PORT || 2525;
 
 // Send email directly to recipient's mail server (no relay needed)
+// Note: This function only handles SMTP delivery - caller is responsible for database logging
 export async function sendToTraditionalEmail(fromEmail, toEmail, subject, textBody, htmlBody) {
     try {
         const [, toDomain] = toEmail.split('@');
@@ -46,48 +47,10 @@ export async function sendToTraditionalEmail(fromEmail, toEmail, subject, textBo
 
         const info = await transporter.sendMail(mailOptions);
         
-        // Log the sent email
-        const [fromUser, fromDomain] = fromEmail.split('@');
-        const sender = await findUser(fromUser, fromDomain);
-        const email = await createEmail({
-            user: sender?.id || 'system',
-            from_address: fromEmail,
-            from_domain: fromDomain,
-            to_address: toEmail,
-            to_domain: toDomain,
-            subject: subject,
-            body: textBody,
-            html_body: htmlBody,
-            content_type: 'text/html',
-            status: 'sent',
-            sent_at: new Date(),
-            folder: 'sent',
-        });
-
-        console.log(`✅ Email #${email.id} sent successfully to ${toEmail} (MessageID: ${info.messageId})`);
+        console.log(`✅ Email sent successfully to ${toEmail} (MessageID: ${info.messageId})`);
         return info;
     } catch (error) {
         console.error('Error sending email:', error);
-        
-        // Log as failed
-        const [fromUser, fromDomain] = fromEmail.split('@');
-        const [toUser, toDomain] = toEmail.split('@');
-        const sender = await findUser(fromUser, fromDomain);
-        await createEmail({
-            user: sender?.id || 'system',
-            from_address: fromEmail,
-            from_domain: fromDomain,
-            to_address: toEmail,
-            to_domain: toDomain,
-            subject: subject,
-            body: textBody,
-            html_body: htmlBody,
-            content_type: 'text/html',
-            status: 'failed',
-            error_message: error.message,
-            sent_at: new Date()
-        });
-        
         throw error;
     }
 }
